@@ -1,0 +1,87 @@
+/*void dfs(int row,int col,int ans,vector<vector<int>>&visit,int delrow[],int delcol[],
+int newcolor,vector<vector<int>>image)
+{
+    visit[row][col]=newcolor;
+    int n=image.size();
+    int m=image[0].size();
+    for(int i=0;i<4;i++)
+    {
+        int nrow=row+delrow[i];
+        int ncol=col+delcol[i];
+        if(nrow>=0&&nrow<n&&ncol>=0&&ncol<m&&image[nrow][ncol]==ans&&visit[nrow][ncol]!=newcolor)
+            dfs(nrow,ncol,ans,visit,delrow,delcol,newcolor,image);
+    }
+}
+
+void dfs(int row,int col,vector<vector<int>>image,int newColor,vector<vector<int>>&res,int delrow[],int delcol[],int ans)
+    {
+
+        int n=image.size();
+        int m=image[0].size();
+        
+        res[row][col]=newColor;
+        for(int i=0;i<4;i++)
+        {
+            int nrow=row+delrow[i];
+            int ncol=col+delcol[i];
+            if(nrow>=0&&nrow<image.size()&&ncol>=0&&ncol<image[0].size()&&image[nrow][ncol]==ans&&res[nrow][ncol]!=newColor)
+                dfs(nrow,ncol,image,newColor,res,delrow,delcol,ans);
+        }
+    }*/
+
+
+void solve(int oldColor, int newColor, int x, int y, int n, int m, vector<vector<int>> &image,
+int delrow[],int delcol[])
+{
+    if(x < 0 || x >= n || y < 0 || y >= m || image[x][y] != oldColor){
+        return;
+    }
+
+    image[x][y] = newColor;
+    for(int i=0;i<4;i++)
+    {
+        int nrow=x+delrow[i];
+        int ncol=y+delcol[i];
+        solve(oldColor, newColor, nrow, ncol, n, m, image,delrow,delcol);
+    }
+    
+   /* solve(oldColor, newColor, x-1, y, n, m, image,delrow,delcol);
+    solve(oldColor, newColor, x, y+1, n, m, image);
+    solve(oldColor, newColor, x, y-1, n, m, image);*/
+
+}
+vector<vector<int>> floodFill(vector<vector<int>> &image, int x, int y, int newColor)
+{
+    // Write your code here.
+
+   /* int ans=image[x][y];
+    vector<vector<int>>visit=image;
+    int delrow[]={-1,0,1,0};
+    int delcol[]={0,1,0,-1};
+
+    dfs(x,y,ans,visit,delrow,delcol,newColor,image);
+    return visit;*/
+
+    int oldColor = image[x][y];
+
+    if(oldColor == newColor){
+        return image;
+    }
+    int delrow[]={-1,0,1,0};
+    int delcol[]={0,1,0,-1};
+    int n = image.size();
+    int m = image[0].size();
+
+    solve(oldColor, newColor, x, y, n, m, image,delrow,delcol);
+
+    return image;
+
+    /*int ans=image[x][y];
+    if(ans==newColor)
+        return image;
+    vector<vector<int>>res=image;
+    int delrow[]={-1,0,1,0};
+    int delcol[]={0,1,0,-1};
+    dfs(x,y,image,newColor,res,delrow,delcol,ans);
+    return res;*/
+}
