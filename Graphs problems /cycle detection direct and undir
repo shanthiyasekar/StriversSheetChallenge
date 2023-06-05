@@ -1,0 +1,110 @@
+//directed
+#include<bits/stdc++.h>
+bool dfs(int node,vector<int>adj[],int visit[],int path[])
+{
+    visit[node]=1;
+    path[node]=1;
+    
+    for(auto it:adj[node])
+    {
+      if(!visit[it])
+      {
+        if(dfs(it,adj,visit,path))
+          return true;
+      }
+      else if(path[it]==1)
+        return true;
+    }
+    path[node]=0;
+    return false;
+}
+
+int detectCycleInDirectedGraph(int n, vector < pair < int, int >> & edges) {
+  // Write your code here.
+
+    //using dfs
+    vector<int>adj[n+1];
+    for(auto it:edges)
+    {
+        adj[it.first].push_back(it.second);
+    }
+    int visit[n+1];
+    int path[n+1];
+    for(int i=1;i<=n;i++)
+    {
+      visit[i]=0;
+      path[i]=0;
+    }
+    for(int i=1;i<=n;i++)
+    {
+        if(!visit[i])
+        {
+          if(dfs(i,adj,visit,path)==true)
+            return 1;
+        }
+    }
+    return 0;
+
+    
+}
+//undirec
+bool isCycle(vector<int>adj[],int node,int visit[],int parent)
+{
+    visit[node]=1;
+    for(auto it:adj[node])
+    {
+        if(!visit[it])
+        {
+            if(isCycle(adj,it,visit,node))
+                return true;
+        }
+        else if(it!=parent)
+            return true;
+    }
+    return false;
+}
+string cycleDetection (vector<vector<int>>& edges, int n, int m)
+{
+    // Write your code here.
+    //using dfs
+
+    vector<int>adj[n+1];
+    for(int i=0;i<m;i++)
+    {
+        adj[edges[i][0]].push_back(edges[i][1]);
+        adj[edges[i][1]].push_back(edges[i][0]);
+    }
+    int visit[n+1]={0};
+    for(int i=1;i<=n;i++)
+    {
+        if(!visit[i])
+        {
+            if(isCycle(adj,i,visit,-1)==true)
+                return "Yes";
+        }
+    }
+    return "No";
+
+   /* vector<int>adj[n+1];  
+    for(int i=0;i<m;i++)
+    {
+        adj[edges[i][0]].push_back(edges[i][1]);
+        adj[edges[i][1]].push_back(edges[i][0]);
+    } 
+    int vis[n+1]={0};
+    //for(int i=0;i<n+1;i++)
+      //  vis[i]=0;
+    //vector<int>vis(n+1,0);
+    for(int i=1;i<=n;i++)  
+    {       
+        if(!vis[i])
+        {           
+            if(isCycle(adj,i,vis,-1))
+            {               
+                return "Yes";           
+            }       
+        }   
+    }
+    return "No"; */
+
+}
